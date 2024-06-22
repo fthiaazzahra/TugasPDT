@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # MySQL Master
+  mysql-master:
+    image: mysql:latest
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: jurnal_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-master-data:/var/lib/mysql
+
+  # MySQL Slave 1
+  mysql-slave1:
+    image: mysql:latest
+    container_name: mysql-slave1
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - mysql-master
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-slave1-data:/var/lib/mysql
+
+  # MySQL Slave 2
+  mysql-slave2:
+    image: mysql:latest
+    container_name: mysql-slave2
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - mysql-master
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-slave2-data:/var/lib/mysql
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
+  # PHP
+  php:
+    image: php:latest
+    container_name: php
+    volumes:
+      - ./php:/var/www/html
+    depends_on:
+      - mysql-master
+      - redis
+      - mongodb
+
+  # Node.js
+  nodejs:
+    image: node:latest
+    container_name: nodejs
+    volumes:
+      - ./nodejs:/usr/src/app
+    working_dir: /usr/src/app
+    command: "npm start"
+    depends_on:
+      - mysql-master
+      - redis
+      - mongodb
+
+volumes:
+  mysql-master-data:
+  mysql-slave1-data:
+  mysql-slave2-data:
+  redis-data:
+  mongodb-data:

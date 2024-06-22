@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jurnal Harian Zara </title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Jurnal Harian Zara</h1>
+
+<form id="catatanForm">
+  <label for="tanggal">Tanggal:</label>
+  <input type="date" id="tanggal" name="tanggal" required>
+  <label for="judul">Judul:</label>
+  <input type="text" id="judul" name="judul" required>
+  <label for="catatan">Catatan Tambahan:</label>
+  <textarea id="catatan" name="catatan" required></textarea>
+  <button type="submit">Tambahkan Catatan</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tanggal</th>
+      <th>Judul</th>
+      <th>Catatan Tambahan</th>
+    </tr>
+  </thead>
+  <tbody id="catatanTableBody">
+    <!-- Baris catatan akan ditambahkan di sini -->
+  </tbody>
+</table>
+
+<script src="scripts.js"></script>
+</body>
+</html>
